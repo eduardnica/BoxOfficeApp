@@ -12,20 +12,13 @@ namespace BoxOfficeApp
 {
     public partial class FirstPage : System.Web.UI.Page
     {
-
-
-
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                // Only load movies if it's not a postback (initial page load)
                 LoadMovies();
             }
         }
-
-
 
         private void LoadMovies()
         {
@@ -40,8 +33,7 @@ namespace BoxOfficeApp
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTableMovies = new DataTable();
                     adapter.Fill(dataTableMovies);
-
-                    // Bind the DataTable to the DropDownList
+                    //binddata to dropdown
                     dropDownMovies.DataSource = dataTableMovies;
                     dropDownMovies.DataTextField = "Title";
                     dropDownMovies.DataValueField = "IdMovie";
@@ -54,12 +46,29 @@ namespace BoxOfficeApp
 
         protected void btnBuyTickets_Click(object sender, EventArgs e)
         {
+
+            // Validate that a movie is selected
+            if (dropDownMovies.SelectedIndex == 0)
+            {
+                ticketResponse.Text = "Please select at least one movie.";
+                return;
+            }
+            if (string.IsNullOrEmpty(txtDate.Text))
+            {
+                ticketResponse.Text = "Please enter a valid date.";
+                return;
+            }
+            if (!int.TryParse(txtQuantity.Text, out int quantity) || quantity <= 0)
+            {
+                ticketResponse.Text = "Please enter a quantity greater than 0";
+                return;
+            }
+
             string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             int ticketID;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-
                 string insertTicketQuery = "INSERT INTO Tickets (Date, Quantity) VALUES (@Date, @Quantity); SELECT SCOPE_IDENTITY();";
                 using (SqlCommand command = new SqlCommand(insertTicketQuery, connection))
                 {
@@ -76,19 +85,20 @@ namespace BoxOfficeApp
                     {
                         int movieID = Convert.ToInt32(movieItem.Value);
                         string insertMovieTicketsQuery = "INSERT INTO MovieTickets (MovieID, TicketID) VALUES (@MovieID, @TicketID)";
+                         
 
                         using (SqlCommand command = new SqlCommand(insertMovieTicketsQuery, connection))
                         {
                             command.Parameters.AddWithValue("@MovieID", movieID);
                             command.Parameters.AddWithValue("@TicketID", ticketID);
-
                             command.ExecuteNonQuery();
                         }
                     }
                 }
             }
+            ticketResponse.Text = $"Tickets purchased successfully for TicketID: {ticketID}. Thank you!";
 
-            Response.Write($"Tickets purchased successfully for TicketID: {ticketID}. Thank you!");
+
         }
 
 

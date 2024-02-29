@@ -14,14 +14,12 @@ namespace BoxOfficeApp
 {
     public partial class ZedGraphClass : System.Web.UI.Page
     {
-
-        GraphPane graphPane;
-
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                 GenerateZedGraph();
+                GeneratePieChart();
             }
         }
 
@@ -78,6 +76,40 @@ namespace BoxOfficeApp
                 }
             }
         }
-    }
 
+        private void GeneratePieChart()
+        {
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string query = "SELECT Movies.title, COUNT(MovieTickets.MovieID) AS TicketsSold " +
+                               "FROM Movies " +
+                               "INNER JOIN MovieTickets ON Movies.IdMovie = MovieTickets.MovieID " +
+                               "GROUP BY Movies.title";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        var pieChart = new GraphPane();
+
+                        while (reader.Read())
+                        {
+                            string movieTitle = reader["title"].ToString();
+                            int ticketsSold = Convert.ToInt32(reader["TicketsSold"]);
+
+                            pieChart.AddPieSlice(ticketsSold, Color.Blue, Color.White, 0f, 0, movieTitle);
+                        }
+
+                        pieChart.Title.Text = "Movies Ticket Sales";
+                        pieChart.Legend.Position = LegendPos.Right;
+                        var ms = new System.IO.MemoryStream();
+                        pieChart.GetImage().Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                        imgPieChart.ImageUrl = "data:image/png;base64," + Convert.ToBase64String(ms.ToArray());
+                    }
+                }
+            }
+        }
+    }
 }

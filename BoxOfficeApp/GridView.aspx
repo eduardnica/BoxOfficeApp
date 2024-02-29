@@ -4,7 +4,35 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+        <title>Movie GridView</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
+
+        #GridView1 {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        #GridView1 th, #GridView1 td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        #GridView1 th {
+            background-color: #175676;
+            color: #ffffff;
+        }
+
+        #GridView1 tr:nth-child(even) {
+            background-color: #abd4f8;
+        }
+    </style>
 </head>
 <body>
 <form id="form1" runat="server">

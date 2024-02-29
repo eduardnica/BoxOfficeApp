@@ -79,24 +79,16 @@
   <ItemGroup>
     <Content Include="Data\data.xml" />
     <Content Include="Global.asax" />
-    <Content Include="GraficPage.aspx" />
     <Content Include="GridView.aspx" />
     <Content Include="Web.config" />
     <Content Include="FirstPage.aspx" />
-    <Content Include="ZedGraph.aspx" />
+    <Content Include="ZedGraphPage.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Models\Movie.cs" />
     <Compile Include="Data\Models\StaticContent.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="GraficPage.aspx.cs">
-      <DependentUpon>GraficPage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="GraficPage.aspx.designer.cs">
-      <DependentUpon>GraficPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="GridView.aspx.cs">
       <DependentUpon>GridView.aspx</DependentUpon>
@@ -119,12 +111,12 @@
     <Compile Include="FirstPage.aspx.designer.cs">
       <DependentUpon>FirstPage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ZedGraph.aspx.cs">
-      <DependentUpon>ZedGraph.aspx</DependentUpon>
+    <Compile Include="ZedGraphPage.aspx.cs">
+      <DependentUpon>ZedGraphPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ZedGraph.aspx.designer.cs">
-      <DependentUpon>ZedGraph.aspx</DependentUpon>
+    <Compile Include="ZedGraphPage.aspx.designer.cs">
+      <DependentUpon>ZedGraphPage.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -138,7 +130,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ZedGraphImages\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

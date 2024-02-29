@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Data;
 using System.Linq;
@@ -11,32 +12,61 @@ namespace BoxOfficeApp
 {
     public partial class GridView : System.Web.UI.Page
     {
+        string cs = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        SqlConnection con;
+        SqlDataAdapter adapt;
+        DataTable dt;
         protected void Page_Load(object sender, EventArgs e)
         {
-            LoadMovies();
+            if (!IsPostBack)
+            {
+                ShowData();
+            }
         }
 
-        private void LoadMovies()
+        protected void ShowData()
         {
-            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            dt = new DataTable();
+            con = new SqlConnection(cs);
+            con.Open();
+            adapt = new SqlDataAdapter("Select IdMovie,Title,ReleaseDate, url, imageURL from Movies", con);
+            adapt.Fill(dt);
+            if (dt.Rows.Count > 0)
             {
-                connection.Open();
-
-                // Select movies from the Movies table
-                string selectMoviesQuery = "SELECT IdMovie, Title, ReleaseDate, URL FROM Movies";
-
-                using (SqlCommand command = new SqlCommand(selectMoviesQuery, connection))
-                {
-                    SqlDataAdapter adapter = new SqlDataAdapter(command);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-
-                    GridViewMovies.DataSource = dataTable;
-                    GridViewMovies.DataBind();
-                }
+                GridView1.DataSource = dt;
+                GridView1.DataBind();
             }
+            con.Close();
+        }
+
+        protected void GridView1_RowEditing(object sender, System.Web.UI.WebControls.GridViewEditEventArgs e)
+        {
+            GridView1.EditIndex = e.NewEditIndex;
+            ShowData();
+        }
+        protected void GridView1_RowUpdating(object sender, System.Web.UI.WebControls.GridViewUpdateEventArgs e)
+        {
+
+            Label id = GridView1.Rows[e.RowIndex].FindControl("lbl_ID") as Label;
+            TextBox title = GridView1.Rows[e.RowIndex].FindControl("txt_Title") as TextBox;
+            TextBox releaseDate = GridView1.Rows[e.RowIndex].FindControl("txt_releaseDate") as TextBox;
+            TextBox url = GridView1.Rows[e.RowIndex].FindControl("txt_url") as TextBox;
+            TextBox imageURL = GridView1.Rows[e.RowIndex].FindControl("txt_imageURl") as TextBox;
+            con = new SqlConnection(cs);
+            con.Open();
+            //updating the record
+            SqlCommand cmd = new SqlCommand("Update Movies set Title='" + title.Text + "',releaseDate='" + releaseDate.Text + "',url='" + url.Text + "',imageURL='" + imageURL.Text + "' where IdMovie=" + Convert.ToInt32(id.Text), con);
+            cmd.ExecuteNonQuery();
+            con.Close();
+            //cancel
+
+            ShowData();
+        }
+        protected void GridView1_RowCancelingEdit(object sender, System.Web.UI.WebControls.GridViewCancelEditEventArgs e)
+        {
+
+            GridView1.EditIndex = -1;
+            ShowData();
         }
     }
 }

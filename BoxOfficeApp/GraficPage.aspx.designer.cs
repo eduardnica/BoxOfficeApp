@@ -11,10 +11,9 @@ namespace BoxOfficeApp
 {
 
 
-    public partial class GridView
+    public partial class GraficPage
     {
 
-        /// <summary>
         /// form1 control.
         /// </summary>
         /// <remarks>
@@ -24,12 +23,12 @@ namespace BoxOfficeApp
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// GridView1 control.
+        /// ZedGraphWeb1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridView1;
+        protected global::ZedGraph.Web.ZedGraphWeb ZedGraphWeb1;
     }
 }

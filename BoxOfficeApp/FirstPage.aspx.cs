@@ -14,6 +14,7 @@ namespace BoxOfficeApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            //check if page reloaded
             if (!IsPostBack)
             {
                 LoadMovies();

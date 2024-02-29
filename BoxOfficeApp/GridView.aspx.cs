@@ -39,12 +39,12 @@ namespace BoxOfficeApp
             con.Close();
         }
 
-        protected void GridView1_RowEditing(object sender, System.Web.UI.WebControls.GridViewEditEventArgs e)
+        protected void GridView1EditRow(object sender, System.Web.UI.WebControls.GridViewEditEventArgs e)
         {
             GridView1.EditIndex = e.NewEditIndex;
             ShowData();
         }
-        protected void GridView1_RowUpdating(object sender, System.Web.UI.WebControls.GridViewUpdateEventArgs e)
+        protected void GridView1UpdateRow(object sender, System.Web.UI.WebControls.GridViewUpdateEventArgs e)
         {
 
             Label id = GridView1.Rows[e.RowIndex].FindControl("lbl_ID") as Label;
@@ -59,10 +59,10 @@ namespace BoxOfficeApp
             cmd.ExecuteNonQuery();
             con.Close();
             //cancel
-
+            GridView1.EditIndex = -1;
             ShowData();
         }
-        protected void GridView1_RowCancelingEdit(object sender, System.Web.UI.WebControls.GridViewCancelEditEventArgs e)
+        protected void GridView1CancelingEdit(object sender, System.Web.UI.WebControls.GridViewCancelEditEventArgs e)
         {
 
             GridView1.EditIndex = -1;

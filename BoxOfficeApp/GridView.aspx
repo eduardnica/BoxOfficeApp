@@ -9,9 +9,9 @@
 <body>
 <form id="form1" runat="server">
     <div>
-        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CellPadding="6" OnRowCancelingEdit="GridView1_RowCancelingEdit"
+        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" CellPadding="6" OnRowCancelingEdit="GridView1CancelingEdit"
 
-OnRowEditing="GridView1_RowEditing" OnRowUpdating="GridView1_RowUpdating">
+OnRowEditing="GridView1EditRow" OnRowUpdating="GridView1UpdateRow">
             <Columns>
                 <asp:TemplateField>
                     <ItemTemplate>

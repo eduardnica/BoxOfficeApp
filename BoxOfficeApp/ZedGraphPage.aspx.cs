@@ -27,10 +27,7 @@ namespace BoxOfficeApp
         {
             DataTable dtMovies = GetMoviesData();
 
-            // Create a ZedGraphControl
             ZedGraphControl zedGraphControl = new ZedGraphControl();
-
-            // Create a GraphPane
             GraphPane myPane = zedGraphControl.GraphPane;
             myPane.Title.Text = "Number of Movies Released Each Year";
             myPane.XAxis.Title.Text = "Year";
@@ -47,12 +44,10 @@ namespace BoxOfficeApp
             BarItem bar = myPane.AddBar("Number of Movies", null, query.Select(x => (double)x.Count).ToArray(), Color.Blue);
             bar.Bar.Fill = new Fill(Color.Blue);
             bar.Bar.Fill.Type = FillType.Solid;
-
             //Customize X-Axis
             myPane.XAxis.Type = AxisType.Text;
             myPane.XAxis.Scale.TextLabels = query.Select(x => x.Year.ToString()).ToArray();
             myPane.XAxis.Scale.FontSpec.Angle = 90;
-
             // Bind the ZedGraphControl to ZedGraphWeb
             ZedGraphWeb1.RenderGraph += (z, g, masterPane) =>
             {
